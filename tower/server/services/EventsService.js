@@ -28,7 +28,23 @@ class EventsService {
     if (event.creatorId.toString() !== body.creatorId) {
       throw new Forbidden('ACCESS DENIED')
     }
+    if (event.isCanceled) {
+      throw new BadRequest('already canceled')
+    }
     const editedEvent = dbContext.Events.findByIdAndUpdate(body.id, body)
+    return editedEvent
+  }
+
+  async cancel(body) {
+    const event = await this.getById(body.id)
+    if (event.creatorId.toString() !== body.creatorId) {
+      throw new Forbidden('ACCESS DENIED')
+    }
+    if (event.isCanceled) {
+      throw new BadRequest('already canceled')
+    }
+    const editedEvent = dbContext.Events.findByIdAndUpdate(body.id, body)
+
     return editedEvent
   }
 }
