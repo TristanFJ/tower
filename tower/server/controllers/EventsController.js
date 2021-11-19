@@ -11,6 +11,7 @@ export class EventsController extends BaseController {
       .get('', this.getAll)
       .get('/:id', this.getById)
       .post('', this.create)
+      .put('/:id', this.edit)
   }
 
   async getAll(req, res, next) {
@@ -39,6 +40,18 @@ export class EventsController extends BaseController {
       const newEvent = await eventsService.create(req.body)
       logger.log('events controller create event', newEvent)
       return res.send(newEvent)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async edit(req, res, next) {
+    try {
+      req.body.creatorId = req.userInfo.id
+      req.body.id = req.params.id
+      req.body.isCanceled = false
+      const event = await eventsService.edit(req.body)
+      return res.send(event)
     } catch (e) {
       next(e)
     }

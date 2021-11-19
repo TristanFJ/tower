@@ -22,6 +22,15 @@ class EventsService {
     logger.log('eventsService', newEvent)
     return await this.getById(newEvent.id)
   }
+
+  async edit(body) {
+    const event = await this.getById(body.id)
+    if (event.creatorId.toString() !== body.creatorId) {
+      throw new Forbidden('ACCESS DENIED')
+    }
+    const editedEvent = dbContext.Events.findByIdAndUpdate(body.id, body)
+    return editedEvent
+  }
 }
 
 export const eventsService = new EventsService()
