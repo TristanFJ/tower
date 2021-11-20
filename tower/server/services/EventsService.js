@@ -10,11 +10,11 @@ class EventsService {
   }
 
   async getById(id) {
-    const found = await dbContext.Events.findById(id).populate('creator', 'name picture')
-    if (!found) {
+    const foundEvent = await dbContext.Events.findById(id).populate('creator', 'name picture')
+    if (!foundEvent) {
       throw new BadRequest('invalid id good sir')
     }
-    return found
+    return foundEvent
   }
 
   async create(body) {
@@ -24,27 +24,14 @@ class EventsService {
   }
 
   async edit(body) {
-    const event = await this.getById(body.id)
-    if (event.creatorId.toString() !== body.creatorId) {
+    const foundEvent = await this.getById(body.id)
+    if (foundEvent.creatorId.toString() !== body.creatorId) {
       throw new Forbidden('ACCESS DENIED')
     }
-    if (event.isCanceled) {
+    if (foundEvent.isCanceled) {
       throw new BadRequest('already canceled')
     }
-    const editedEvent = dbContext.Events.findByIdAndUpdate(body.id, body)
-    return editedEvent
-  }
-
-  async cancel(body) {
-    const event = await this.getById(body.id)
-    if (event.creatorId.toString() !== body.creatorId) {
-      throw new Forbidden('ACCESS DENIED')
-    }
-    if (event.isCanceled) {
-      throw new BadRequest('already canceled')
-    }
-    const editedEvent = dbContext.Events.findByIdAndUpdate(body.id, body)
-
+    const editedEvent = dbContext.Events.findOneAndUpdate({ _id: body.id, creatorId: body.creatorId }, body)
     return editedEvent
   }
 }

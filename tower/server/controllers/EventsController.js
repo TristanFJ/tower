@@ -29,8 +29,8 @@ export class EventsController extends BaseController {
 
   async getById(req, res, next) {
     try {
-      const event = await eventsService.getById(req.params.id)
-      return res.send(event)
+      const foundEvent = await eventsService.getById(req.params.id)
+      return res.send(foundEvent)
     } catch (e) {
       next(e)
     }
@@ -39,6 +39,7 @@ export class EventsController extends BaseController {
   async create(req, res, next) {
     try {
       req.body.creatorId = req.userInfo.id
+      req.body.accountId = req.userInfo.id
       const newEvent = await eventsService.create(req.body)
       logger.log('events controller create event', newEvent)
       return res.send(newEvent)
@@ -52,8 +53,8 @@ export class EventsController extends BaseController {
       req.body.creatorId = req.userInfo.id
       req.body.id = req.params.id
       req.body.isCanceled = false
-      const event = await eventsService.edit(req.body)
-      return res.send(event)
+      const editedEvent = await eventsService.edit(req.body)
+      return res.send(editedEvent)
     } catch (e) {
       next(e)
     }
@@ -64,8 +65,8 @@ export class EventsController extends BaseController {
       req.body.creatorId = req.userInfo.id
       req.body.id = req.params.id
       req.body.isCanceled = true
-      const event = await eventsService.edit(req.body)
-      return res.send(event)
+      const editedEvent = await eventsService.edit(req.body)
+      return res.send(editedEvent)
     } catch (e) {
       next(e)
     }

@@ -19,11 +19,22 @@ class AttendeesService {
   }
 
   async create(body) {
+    const foundEvent = await dbContext.Events.findById(body.eventId)
+    logger.log(foundEvent)
+    // TODO can't get event by id. Don't know how to check if attending or reduce capacity without this. My get event by id test passes, but it returns undefined in the event. Very confused
     const newAttendant = await dbContext.Attendees.create(body)
     await newAttendant.populate('account event')
     logger.log('newAttendant', newAttendant)
     // TODO decrease attendance capacity
     return await this.getById(newAttendant.id)
+  }
+
+  async remove(attendeeId, userId) {
+    const attendee = await this.getById(attendeeId)
+    if (attendee.id.toString() !== userId) {
+      throw new BadRequest('ACCESS DENIED')
+    }
+    await dbContext.Attendees.findByIdAndDelete(attendeeId)
   }
 }
 
