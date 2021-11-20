@@ -6,7 +6,7 @@ import { BadRequest } from '../utils/Errors'
 
 export class EventsController extends BaseController {
   constructor() {
-    super('api/events')
+    super('/api/events')
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getAll)

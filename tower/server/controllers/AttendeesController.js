@@ -11,7 +11,7 @@ export class AttendeesController extends BaseController {
       .post('/api/attendees', this.create)
       .get('/account/attendees', this.getMyAttendance)
       .get('/api/events/:eventId/attendees', this.getEventAttendance)
-      .delete('api/attendees/:attendeeId', this.remove)
+      .delete('/api/attendees/:attendeeId', this.remove)
   }
 
   async getMyAttendance(req, res, next) {
@@ -48,6 +48,8 @@ export class AttendeesController extends BaseController {
   // TODO delete attendee passes tests but returns 404
   async remove(req, res, next) {
     try {
+      req.body.accountId = req.userInfo.id
+      req.body.attendeeId = req.params.attendeeId
       await attendeesService.remove(req.params.attendeeId, req.userInfo.id)
       res.send({ message: 'Removed Attendee' })
     } catch (e) {
