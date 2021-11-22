@@ -31,31 +31,63 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="createEvent">
+            <form @submit.prevent="createEvent()">
               <input
                 class="form-control"
                 v-model="state.editable.name"
                 type="text"
                 placeholder="Event name"
               />
-
+              <input
+                class="form-control"
+                v-model="state.editable.description"
+                type="text"
+                placeholder="Description"
+              />
+              <input
+                class="form-control"
+                v-model="state.editable.coverImg"
+                type="text"
+                placeholder="coverImg"
+              />
+              <input
+                class="form-control"
+                v-model="state.editable.location"
+                type="text"
+                placeholder="Location"
+              />
+              <input
+                class="form-control"
+                v-model="state.editable.capacity"
+                type="number"
+                placeholder="Capacity"
+              />
               <input
                 class="form-control"
                 v-model="state.editable.startDate"
-                type="text"
+                type="date"
                 placeholder="Start date"
+              />
+              <input
+                class="form-control"
+                v-model="state.editable.type"
+                type="text"
+                placeholder="'concert', 'convention', 'sport', 'digital'"
               />
             </form>
           </div>
           <div class="modal-footer">
-            <button
-              type="submit"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save</button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              @click.prevent="createEvent()"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
@@ -69,8 +101,11 @@ import { reactive } from "@vue/reactivity"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { eventsService } from "../services/EventsService"
+import { useRouter } from "vue-router"
+import { AppState } from "../AppState"
 export default {
   setup() {
+    const router = useRouter()
     const state = reactive({
       editable: {},
     })
@@ -78,9 +113,13 @@ export default {
       state,
       async createEvent() {
         try {
-          // await eventsService.createEvent(state.editable)
-          logger.log(state.editable)
+          await eventsService.createEvent(state.editable)
+          // logger.log(state.editable)
           state.editable = {}
+          router.push({
+            name: "Event",
+            params: { eventId: AppState.activeEvent.id }
+          })
         } catch (e) {
           logger.error(e)
           Pop.toast(e.message, 'error')
