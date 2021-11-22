@@ -1,3 +1,4 @@
+import { applyStyles } from "@popperjs/core"
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
@@ -16,6 +17,13 @@ class CommentsService {
     Pop.toast('created', 'success')
     const res = await api.post('api/comments', data)
     AppState.comments.push(res.data)
+  }
+
+  async remove(id) {
+    const yes = await Pop.confirm('delete?')
+    if (!yes) { return }
+    await api.delete('api/comments/' + id)
+    AppState.comments = AppState.comments.filter(c => c.id !== id)
   }
 }
 
