@@ -3,15 +3,19 @@ import { BadRequest, Forbidden } from '../utils/Errors'
 import { logger } from '../utils/Logger'
 
 class AttendeesService {
-  async getMyAttendance(query = {}) {
-    const myAttendance = await dbContext.Events.find(query)
-      .populate('creator', 'name picture')
+  async getMyEvents(userId) {
+    return await dbContext.Attendees.find({ userId }).populate('event')
+  }
+
+  async getEventAttendance(query = {}) {
+    const myAttendance = await dbContext.Attendees.find(query)
+      .populate('account')
     return myAttendance
   }
 
   async getById(id) {
     const attendant = await dbContext.Attendees.findById(id)
-      .populate('account', 'name picture')
+      .populate('account event', 'name picture')
     if (!attendant) {
       throw new BadRequest('invalid id')
     }
@@ -21,19 +25,41 @@ class AttendeesService {
   async create(body) {
     const foundEvent = await dbContext.Events.findById(body.eventId)
     logger.log(foundEvent)
-    // TODO can't get event by id. Don't know how to check if attending or reduce capacity without this. My get event by id test passes, but it returns undefined in the event. Very confused
+    if (foundEvent.isCanceled) {
+      throw new BadRequest('event canceled')
+    }
+    if (foundEvent.capacity < 1) {
+      throw new BadRequest('event full')
+    }
+    foundEvent.capacity = (foundEvent.capacity - 1)
+    await foundEvent.save()
+
     const newAttendant = await dbContext.Attendees.create(body)
     await newAttendant.populate('account event')
-    logger.log('newAttendant', newAttendant)
-    // TODO decrease attendance capacity
+
     return await this.getById(newAttendant.id)
   }
 
   async remove(attendeeId, userId) {
+    // I need to find the event that the removed attendant is attending so that I can increase the capacity
     const attendee = await this.getById(attendeeId)
-    if (attendee.id.toString() !== userId) {
+    // and then access the event that is populated
+    const foundEvent = await dbContext.Events.findById(attendee.eventId)
+    // TODO
+    // capacity is undefined
+    // it might not work because it's a populated event, but I don't know how to get that event without it being a populated
+
+    if (foundEvent.isCanceled) {
+      throw new BadRequest('event canceled')
+    }
+    if (foundEvent.capacity < 1) {
+      throw new BadRequest('event full')
+    }
+    if (foundEvent.creatorId.toString() !== userId) {
       throw new BadRequest('ACCESS DENIED')
     }
+    foundEvent.capacity = (foundEvent.capacity + 1)
+    await foundEvent.save()
     await dbContext.Attendees.findByIdAndDelete(attendeeId)
   }
 }

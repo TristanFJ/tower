@@ -7,6 +7,8 @@ export const AttendantSchema = new Schema({
   accountId: { type: ObjectId, required: true, ref: 'Account' }
 }, { timestamps: true, toJSON: { virtuals: true } })
 
+AttendantSchema.index({ eventId: 1, accountId: 1 }, { unique: true })
+
 AttendantSchema.virtual('event', {
   localField: 'eventId',
   ref: 'Event',
