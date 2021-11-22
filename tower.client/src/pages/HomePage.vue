@@ -7,7 +7,7 @@
         :key="event.id"
         :event="event"
         @click="routeTo(event.id)"
-        :class="event.capacity < 0 ? 'bg-danger' : 'bg-secondary'"
+        :class="event.capacity == 0 ? 'bg-danger' : 'bg-secondary'"
       />
     </div>
   </div>

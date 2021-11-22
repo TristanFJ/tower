@@ -1,7 +1,12 @@
 <template>
   <div class="comment m-2 border border-dark p-2">
     <h5>
-      <img :src="comment.creator.picture" width="50" alt="" />
+      <img
+        :title="comment.creator.name"
+        :src="comment.creator.picture"
+        width="50"
+        alt=""
+      />
       {{ comment.creator.name
       }}<i
         @click="remove()"
