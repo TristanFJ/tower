@@ -7,6 +7,7 @@ export class AttendeesController extends BaseController {
   constructor() {
     super('')
     this.router
+      // NOTE the super shouldn't be empty, the account/attendees shouldn't be in here
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('/api/attendees', this.create)
       .get('/account/attendees', this.getMyEvents)
@@ -17,8 +18,6 @@ export class AttendeesController extends BaseController {
   async getMyEvents(req, res, next) {
     try {
       const query = req.userInfo.id
-      req.body.eventId = req.params.eventId
-      req.body.creatorId = req.userInfo.id
       const myAttendance = await attendeesService.getMyEvents(query)
       return res.send(myAttendance)
     } catch (e) {

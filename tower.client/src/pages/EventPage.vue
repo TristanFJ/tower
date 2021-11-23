@@ -23,7 +23,16 @@
         @click="cancel()"
       ></i>
 
-      <button @click="attend()" class="btn btn-success m-3">Attend</button>
+      <button
+        @click="attend()"
+        v-if="!active.isCanceled && active.capacity > 0"
+        class="btn btn-success m-3"
+        :disabled="
+          !account.id || hasAttended || active.capacity < 1 || active.isCanceled
+        "
+      >
+        Attend
+      </button>
 
       <div :id="'edit-' + active.id" class="modal" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -136,6 +145,7 @@ import { eventsService } from "../services/EventsService"
 import { AppState } from "../AppState"
 import { useRoute } from "vue-router"
 import { commentsService } from '../services/CommentsService'
+import { attendeesService } from '../services/AttendeesService'
 import { router } from "../router"
 export default {
   // props: { event: { type: Object, required: true } },
@@ -147,6 +157,7 @@ export default {
     onMounted(async () => {
       try {
         await eventsService.getAll('api/events/')
+        await attendeesService.getAll('api/events/' + route.params.eventId + '/attendees')
         await commentsService.getAll('api/events/' + route.params.eventId + '/comments')
       } catch (e) {
         logger.log(e)
@@ -159,7 +170,11 @@ export default {
       events: computed(() => AppState.events),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
-      attendees: computed(() => AppState.attendees),
+      hasAttended: computed(() => {
+        const found = AppState.attendees.find(a => a.accountId === AppState.account.id)
+        return found ? true : false
+      }),
+
 
       async createComment() {
         try {

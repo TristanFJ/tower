@@ -3,8 +3,9 @@ import { BadRequest, Forbidden } from '../utils/Errors'
 import { logger } from '../utils/Logger'
 
 class AttendeesService {
-  async getMyEvents(userId) {
-    return await dbContext.Attendees.find({ userId }).populate('event')
+  async getMyEvents(accountId) {
+    // NOTE changed accountId from userId, needs to match Schema
+    return await dbContext.Attendees.find({ accountId }).populate('event')
   }
 
   async getEventAttendance(query = {}) {
