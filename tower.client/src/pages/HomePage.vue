@@ -3,11 +3,13 @@
     <div class="row px-2">
       <Event
         v-for="event in events"
-        class="my-1"
+        class=""
         :key="event.id"
         :event="event"
         @click="routeTo(event.id)"
-        :class="event.capacity == 0 || event.isCanceled ? 'bg-warning' : ''"
+        :class="
+          event.capacity == 0 || event.isCanceled ? 'border border-danger' : ''
+        "
       />
     </div>
   </div>

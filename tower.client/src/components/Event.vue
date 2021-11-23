@@ -7,6 +7,7 @@
     <p>Starts {{ new Date(event.startDate) }}</p>
     <h5>{{ event.capacity }} spots remaining</h5>
     <h5>Located at {{ event.location }}</h5>
+    <h5 v-if="event.isCanceled" class="bg-danger">UNAVAILABLE</h5>
   </div>
 </template>
 

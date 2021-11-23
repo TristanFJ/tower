@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="active.capacity == 0 ? 'bg-danger' : ''"
+    :class="active.capacity == 0 ? 'border border-danger border-thick' : ''"
     class="eventDetails"
     v-if="active"
   >
