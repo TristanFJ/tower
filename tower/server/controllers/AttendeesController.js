@@ -5,14 +5,12 @@ import { logger } from '../utils/Logger'
 
 export class AttendeesController extends BaseController {
   constructor() {
-    super('')
+    super('/api/attendees')
     this.router
       // NOTE the super shouldn't be empty, the account/attendees shouldn't be in here
       .use(Auth0Provider.getAuthorizedUserInfo)
-      .post('/api/attendees', this.create)
-      .get('/account/attendees', this.getMyEvents)
-      .get('/api/events/:eventId/attendees', this.getEventAttendance)
-      .delete('/api/attendees/:attendeeId', this.remove)
+      .post('', this.create)
+      .delete('/:attendeeId', this.remove)
   }
 
   async getMyEvents(req, res, next) {
@@ -20,17 +18,6 @@ export class AttendeesController extends BaseController {
       const query = req.userInfo.id
       const myAttendance = await attendeesService.getMyEvents(query)
       return res.send(myAttendance)
-    } catch (e) {
-      next(e)
-    }
-  }
-
-  async getEventAttendance(req, res, next) {
-    try {
-      req.body.eventId = req.params.eventId
-      req.body.creatorId = req.userInfo.id
-      const attendance = await attendeesService.getEventAttendance({ eventId: req.body.eventId })
-      return res.send(attendance)
     } catch (e) {
       next(e)
     }

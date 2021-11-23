@@ -5,12 +5,12 @@ import { BadRequest, Forbidden } from '../utils/Errors'
 class EventsService {
   async getAll(query = {}) {
     const res = await dbContext.Events.find({}).populate('creator', 'name picture')
+    return res
     // const page = query.page || 1
     // delete query.page
     // const totalPages = Math.ceil(await dbContext.Events.count() / 15)
     // const events = await dbContext.Events.find(query).populate('creator', 'name picture').limit(15).skip((page - 1) * 15)
     // return { results: events, page, totalPages }
-    return res
   }
 
   async getById(id) {

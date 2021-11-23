@@ -28,7 +28,10 @@
         v-if="!active.isCanceled && active.capacity > 0"
         class="btn btn-success m-3"
         :disabled="
-          !account.id || hasAttended || active.capacity < 1 || active.isCanceled
+          !account.id ||
+          hasAttended ||
+          active.capacity <= 0 ||
+          active.isCanceled
         "
       >
         Attend
@@ -157,7 +160,7 @@ export default {
     onMounted(async () => {
       try {
         await eventsService.getAll('api/events/')
-        await attendeesService.getAll('api/events/' + route.params.eventId + '/attendees')
+        await attendeesService.getEventAttendees(route.params.eventId)
         await commentsService.getAll('api/events/' + route.params.eventId + '/comments')
       } catch (e) {
         logger.log(e)

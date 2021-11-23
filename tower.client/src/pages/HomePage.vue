@@ -8,7 +8,7 @@
         :event="event"
         @click="routeTo(event.id)"
         :class="
-          event.capacity == 0 || event.isCanceled ? 'border border-danger' : ''
+          event.capacity === 0 || event.isCanceled ? 'border border-danger' : ''
         "
       />
     </div>

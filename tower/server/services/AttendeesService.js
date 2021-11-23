@@ -46,9 +46,6 @@ class AttendeesService {
     const attendee = await this.getById(attendeeId)
     // and then access the event that is populated
     const foundEvent = await dbContext.Events.findById(attendee.eventId)
-    // TODO
-    // capacity is undefined
-    // it might not work because it's a populated event, but I don't know how to get that event without it being a populated
 
     if (foundEvent.isCanceled) {
       throw new BadRequest('event canceled')

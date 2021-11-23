@@ -13,6 +13,15 @@ class EventsService {
     AppState.events = res.data
   }
 
+  async getMyEvents() {
+    const res = await api.get('account/attendees')
+    logger.log(res)
+    // NOTE paginated
+    // AppState.events = res.data.results
+    AppState.myEvents = res.data
+  }
+
+
   async createEvent(data) {
     Pop.toast('created', 'success')
     const res = await api.post('api/events', data)

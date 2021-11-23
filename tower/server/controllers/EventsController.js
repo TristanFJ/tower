@@ -3,14 +3,18 @@ import BaseController from '../utils/BaseController'
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { eventsService } from '../services/EventsService'
 import { BadRequest } from '../utils/Errors'
+import { attendeesService } from '../services/AttendeesService'
+import { commentsService } from '../services/CommentsService'
 
 export class EventsController extends BaseController {
   constructor() {
     super('/api/events')
     this.router
-      .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getAll)
       .get('/:id', this.getById)
+      .get('/:eventId/attendees', this.getEventAttendance)
+      .get('/:eventId/comments', this.getEventComments)
+      .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
       .put('/:id', this.edit)
       .delete('/:id', this.cancel)
@@ -22,6 +26,25 @@ export class EventsController extends BaseController {
       const events = await eventsService.getAll(query)
       logger.log('events controller get all', events)
       return res.send(events)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async getEventAttendance(req, res, next) {
+    try {
+      const attendance = await attendeesService.getEventAttendance({ eventId: req.params.eventId })
+      return res.send(attendance)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async getEventComments(req, res, next) {
+    try {
+      const query = req.params
+      const comments = await commentsService.getEventComments(query)
+      return res.send(comments)
     } catch (e) {
       next(e)
     }
