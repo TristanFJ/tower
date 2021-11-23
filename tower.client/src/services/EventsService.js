@@ -1,4 +1,3 @@
-import { applyStyles } from "@popperjs/core";
 import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
@@ -17,7 +16,7 @@ class EventsService {
   async createEvent(data) {
     Pop.toast('created', 'success')
     const res = await api.post('api/events', data)
-    AppState.events.push(res.data)
+    AppState.events.unshift(res.data)
     AppState.activeEvent = res.data
   }
 
@@ -35,6 +34,12 @@ class EventsService {
     await api.delete('api/events/' + id)
     AppState.events = AppState.events.filter(e => e.id !== id)
     AppState.activeEvent = {}
+  }
+
+  async attend(data) {
+    const res = await api.post('api/attendees/', data)
+    logger.log(res)
+    AppState.attendees.push(res.data)
   }
 }
 export const eventsService = new EventsService()

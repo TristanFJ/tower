@@ -74,20 +74,21 @@
                 type="text"
                 placeholder="'concert', 'convention', 'sport', 'digital'"
               />
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Close
-            </button>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                  Close
+                </button>
 
-            <button
-              type="submit"
-              class="btn btn-primary"
-              @click.prevent="createEvent()"
-            >
-              Save
-            </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  @click.prevent="createEvent()"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

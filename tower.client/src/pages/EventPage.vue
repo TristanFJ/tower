@@ -23,6 +23,8 @@
         @click="cancel()"
       ></i>
 
+      <button @click="attend()" class="btn btn-success m-3">Attend</button>
+
       <div :id="'edit-' + active.id" class="modal" tabindex="-1">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -157,6 +159,7 @@ export default {
       events: computed(() => AppState.events),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
+      attendees: computed(() => AppState.attendees),
 
       async createComment() {
         try {
@@ -179,10 +182,28 @@ export default {
       },
 
       async cancel() {
-        await eventsService.cancel(route.params.eventId)
-        router.push({
-          name: "Home"
-        })
+
+        try {
+          await eventsService.cancel(route.params.eventId)
+          router.push({
+            name: "Home"
+          })
+        } catch (error) {
+          logger.error(error)
+        }
+      },
+
+
+
+      async attend() {
+        try {
+          let data = {}
+          data.eventId = route.params.eventId
+          data.accountId = this.account.id
+          await eventsService.attend(data)
+        } catch (error) {
+          logger.error(error)
+        }
       }
     }
   }

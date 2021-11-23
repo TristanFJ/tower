@@ -1,5 +1,6 @@
 <template>
   <div class="col-md-3 selectable card p-1 elevation-3">
+    <img :src="event.coverImg" alt="" />
     <h4>
       {{ event.name }}
     </h4>
@@ -24,4 +25,7 @@ export default {
 
 
 <style lang="scss" scoped>
+img {
+  object-fit: fill;
+}
 </style>
