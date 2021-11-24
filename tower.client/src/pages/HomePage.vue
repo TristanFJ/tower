@@ -1,29 +1,23 @@
 <template>
-  <li class="mx-1">
-    <button @click="type = ''" class="btn btn-primary">
-      <h6>All</h6>
-    </button>
-  </li>
-  <li class="mx-1">
-    <button @click="type = 'concert'" class="btn btn-primary">
-      <h6>Concert</h6>
-    </button>
-  </li>
-  <li class="mx-1">
-    <button @click="type = 'convention'" class="btn btn-primary">
-      <h6>Convention</h6>
-    </button>
-  </li>
-  <li class="mx-1">
-    <button @click="type = 'sport'" class="btn btn-primary">
-      <h6>Sport</h6>
-    </button>
-  </li>
-  <li class="mx-1">
-    <button @click="type = 'digital'" class="btn btn-primary">
-      <h6>Digital</h6>
-    </button>
-  </li>
+  <button @click="type = ''" class="btn btn-primary m-1">
+    <h6>All</h6>
+  </button>
+
+  <button @click="type = 'concert'" class="btn btn-primary m-1">
+    <h6>Concert</h6>
+  </button>
+
+  <button @click="type = 'convention'" class="btn btn-primary m-1">
+    <h6>Convention</h6>
+  </button>
+
+  <button @click="type = 'sport'" class="btn btn-primary m-1">
+    <h6>Sport</h6>
+  </button>
+
+  <button @click="type = 'digital'" class="btn btn-primary m-1">
+    <h6>Digital</h6>
+  </button>
 
   <div class="container-fluid text-center">
     <div class="row px-2">
