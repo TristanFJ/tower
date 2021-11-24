@@ -10,4 +10,5 @@ export const AppState = reactive({
   attendees: [],
   capacity: {},
   myEvents: [],
+  // filter: ''
 })

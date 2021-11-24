@@ -1,10 +1,6 @@
 <template>
-  <div
-    :class="active.capacity == 0 ? 'border border-danger border-thick' : ''"
-    class="eventDetails"
-    v-if="active"
-  >
-    <img :src="active.coverImg" height="200" class="m-2" alt="" />
+  <div class="eventDetails" v-if="active">
+    <img :src="active.coverImg" height="200" class="m-2 elevation-3" alt="" />
     <div class="col-md-1 p-0">
       <i
         v-if="account.id == active.creatorId && !active.isCanceled"
@@ -34,7 +30,7 @@
           active.isCanceled
         "
       >
-        Attend
+        {{ hasAttended ? "You're attending!" : "Attend" }}
       </button>
 
       <div :id="'edit-' + active.id" class="modal" tabindex="-1">

@@ -10,7 +10,11 @@
           :key="e.id"
           :event="e.event"
           @click="routeTo(e.event.id)"
-          :class="e.capacity == 0 || e.isCanceled ? 'border border-danger' : ''"
+          :class="
+            e.event.capacity === 0 || e.event.isCanceled
+              ? 'border border-danger'
+              : 'border border-success'
+          "
         />
       </div>
     </div>

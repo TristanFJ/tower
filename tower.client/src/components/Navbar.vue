@@ -26,6 +26,7 @@
           </h4>
         </li>
       </ul>
+
       <span class="navbar-text">
         <button
           class="
@@ -87,11 +88,15 @@
 <script>
 import { AuthService } from '../services/AuthService'
 import { AppState } from '../AppState'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { logger } from "../utils/Logger"
+import { eventsService } from "../services/EventsService"
 export default {
   setup() {
+
     return {
       user: computed(() => AppState.user),
+
       async login() {
         AuthService.loginWithPopup()
       },
