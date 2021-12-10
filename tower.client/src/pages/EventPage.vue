@@ -1,5 +1,8 @@
 <template>
   <div class="eventDetails" v-if="active">
+    <h1 class="bg-danger m-1 p-3 w-25 text-center" v-if="active.isCanceled">
+      Event is canceled
+    </h1>
     <img :src="active.coverImg" height="200" class="m-2 elevation-3" alt="" />
     <div class="col-md-1 p-0">
       <i
@@ -30,7 +33,7 @@
           active.isCanceled
         "
       >
-        {{ hasAttended ? "You're attending!" : "Attend" }}
+        {{ !hasAttended ? "Attend" : "You're attending!" }}
       </button>
 
       <div :id="'edit-' + active.id" class="modal" tabindex="-1">

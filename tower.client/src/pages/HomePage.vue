@@ -1,26 +1,28 @@
 <template>
-  <button @click="type = ''" class="btn btn-primary m-1">
-    <h6>All</h6>
-  </button>
+  <div class="justify-content-center d-flex my-3">
+    <button @click="type = ''" class="btn btn-primary m-1">
+      <h6>All</h6>
+    </button>
 
-  <button @click="type = 'concert'" class="btn btn-primary m-1">
-    <h6>Concert</h6>
-  </button>
+    <button @click="type = 'concert'" class="btn btn-primary m-1">
+      <h6>Concert</h6>
+    </button>
 
-  <button @click="type = 'convention'" class="btn btn-primary m-1">
-    <h6>Convention</h6>
-  </button>
+    <button @click="type = 'convention'" class="btn btn-primary m-1">
+      <h6>Convention</h6>
+    </button>
 
-  <button @click="type = 'sport'" class="btn btn-primary m-1">
-    <h6>Sport</h6>
-  </button>
+    <button @click="type = 'sport'" class="btn btn-primary m-1">
+      <h6>Sport</h6>
+    </button>
 
-  <button @click="type = 'digital'" class="btn btn-primary m-1">
-    <h6>Digital</h6>
-  </button>
+    <button @click="type = 'digital'" class="btn btn-primary m-1">
+      <h6>Digital</h6>
+    </button>
+  </div>
 
-  <div class="container-fluid text-center">
-    <div class="row px-2">
+  <div class="container-fluid justify-content-center p-0">
+    <div class="row p-0 m-0">
       <Event
         v-for="event in events"
         class=""

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-3 selectable card p-1 elevation-3">
+  <div class="col-md-3 selectable card m-0 p-1 elevation-3">
     <img class="elevation-3" :src="event.coverImg" alt="" />
     <h4>
       {{ event.name }}
